@@ -36,7 +36,8 @@ public class PlayerAnimation : MonoBehaviour
         transform.position = pos;
 
         transform.rotation = Quaternion.Lerp(transform.rotation,
-            Quaternion.LookRotation(vel, normal), normLerp);
+            Quaternion.LookRotation(
+                Vector3.ProjectOnPlane(vel, normal), normal), normLerp);
 
         anim.SetFloat("speed", vel.magnitude * speedScale);
         anim.SetBool("ground", ground);

@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class PlayerPhysics : MonoBehaviour
 {
-    public float jumpForce = 25, friction = .1f;
+    public float moveForce = 50, jumpForce = 25, friction = .1f;
+    public float bodyOffset, groundthreshold = .6f;
 
     private Rigidbody rb, island;
     private PlayerAnimation anim;
-    private Transform bod;
 
     private Vector3 up, normal;
-    private float offset;
     private bool ground;
     
     // Start is called before the first frame update
@@ -19,17 +18,21 @@ public class PlayerPhysics : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         anim = transform.parent.GetComponentInChildren<PlayerAnimation>();
-        offset = GetComponent<SphereCollider>().radius;
-        bod = transform.GetChild(0);
     }
 
     public void Move(Vector3 force, Vector3 up)
     {
         this.up = up;
+        GetNormal();
         rb.velocity *= (1 - friction);
-        rb.AddForce(force);
-        anim.Process(rb.position - normal * offset, normal, rb.velocity, ground);
-        bod.rotation = anim.transform.rotation;
+        rb.AddForce(force * moveForce);
+
+        Vector3 vel = rb.velocity;
+        if (island)
+            vel -= island.velocity;
+        anim.Process(rb.position - normal * bodyOffset, ground? normal:up,
+            vel, ground);
+        transform.rotation = anim.transform.rotation;
     }
 
     public bool Jump()
@@ -37,7 +40,7 @@ public class PlayerPhysics : MonoBehaviour
         if (!ground)
             return false;
         anim.Jump();
-        rb.AddForce(up * jumpForce, ForceMode.Impulse);
+        rb.AddForce(up * (island ? jumpForce : jumpForce * 2), ForceMode.Impulse);
         if (island)
             island.AddForceAtPosition(
             -up * jumpForce, rb.position, ForceMode.Impulse);
@@ -45,26 +48,30 @@ public class PlayerPhysics : MonoBehaviour
         return true;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void GetNormal()
     {
-        if (collision.collider.CompareTag("Island"))
+        RaycastHit rayHit;
+        bool hit = Physics.Raycast(rb.position, -up, out rayHit);
+        if(hit && rayHit.distance < groundthreshold)
         {
-            normal = collision.contacts[0].normal;
-            if (!ground)
+            if (rayHit.collider.CompareTag("Island"))
             {
-                island = collision.rigidbody;
-                if (island)
-                    island.AddForceAtPosition(
-                    -up * jumpForce, rb.position, ForceMode.Impulse);
-                ground = true;
+                if (!ground)
+                {
+                    island = rayHit.rigidbody;
+                    if (island)
+                        island.AddForceAtPosition(
+                        -up * jumpForce, rb.position, ForceMode.Impulse);
+                }
+                anim.SetWater(false);
             }
-            anim.SetWater(false);
-        }
-        else if (collision.collider.CompareTag("World"))
-        {
-            normal = collision.contacts[0].normal;
-            anim.SetWater(true);
+            else if (rayHit.collider.CompareTag("World"))
+            {
+                island = null;
+                anim.SetWater(true);
+            }
             ground = true;
         }
+        normal = rayHit.normal;
     }
 }

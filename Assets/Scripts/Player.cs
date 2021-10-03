@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    public float moveForce, gravity;
+    public float gravity;
     public float dirLerp, jumpHoldTime = 0.1f;
 
     private World world;
@@ -103,11 +103,11 @@ public class Player : MonoBehaviour
         // add up/down force relative to camera
         Vector3 forward = cam.transform.forward;
         forward = Vector3.ProjectOnPlane(forward, up);
-        forward *= moveDir.y * moveForce;
+        forward *= moveDir.y;
         // add left/right force relative to camera
         Vector3 right = cam.transform.right;
         right = Vector3.ProjectOnPlane(right, up);
-        right *= moveDir.x * moveForce;
+        right *= moveDir.x;
 
         phys.Move(forward + right, up);
     }

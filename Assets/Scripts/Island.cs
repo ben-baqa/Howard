@@ -23,12 +23,6 @@ public class Island : MonoBehaviour
         normal = normal.normalized;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void FixedUpdate()
     {
         normal = (rb.position - world.transform.position).normalized;
