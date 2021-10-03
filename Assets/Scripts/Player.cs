@@ -103,11 +103,11 @@ public class Player : MonoBehaviour
         // add up/down force relative to camera
         Vector3 forward = cam.transform.forward;
         forward = Vector3.ProjectOnPlane(forward, up);
-        forward *= moveDir.y;
+        forward = forward.normalized * moveDir.y;
         // add left/right force relative to camera
         Vector3 right = cam.transform.right;
         right = Vector3.ProjectOnPlane(right, up);
-        right *= moveDir.x;
+        right = right.normalized * moveDir.x;
 
         phys.Move(forward + right, up);
     }
