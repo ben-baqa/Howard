@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    public float moveForce, jumpForce, gravity, stompForce;
+    public float moveForce, gravity;
     public float dirLerp, jumpHoldTime = 0.1f;
 
     private World world;
@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     private Rigidbody rb;
     private PlayerPhysics phys;
 
-    private Vector3 up, normal;
+    private Vector3 up;
     private Vector2 moveDir;
     private float jumpHoldTimer;
     private bool jump, jumpToggle = true;
