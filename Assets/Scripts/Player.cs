@@ -5,25 +5,33 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    public float moveForce, jumpForce, gravity;
-    public float dirLerp;
+    public float moveForce, jumpForce, gravity, stompForce;
+    public float dirLerp, jumpHoldTime = 0.1f;
 
     private World world;
     private Camera cam;
     private Rigidbody rb;
-    private Animator anim;
+    private PlayerPhysics phys;
 
-    private Vector3 normal;
+    private Vector3 up, normal;
     private Vector2 moveDir;
-    private bool jump;
+    private float jumpHoldTimer;
+    private bool jump, jumpToggle = true;
+
+    private Vector3 debugVec1, debugVec2;
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawRay(transform.position, debugVec1);
+        Gizmos.DrawRay(transform.position, debugVec2);
+    }
 
     // Start is called before the first frame update
     void Start()
     {
         world = World.instance;
         cam = Camera.main;
-        rb = GetComponent<Rigidbody>();
-        anim = GetComponent<Animator>();
+        rb = GetComponentInChildren<Rigidbody>();
+        phys = GetComponentInChildren<PlayerPhysics>();
     }
 
     // Update is called once per frame
@@ -34,10 +42,15 @@ public class Player : MonoBehaviour
 
     private void FetchInput()
     {
+        bool jumpControl = false;
+
         Gamepad g = Gamepad.current;
         if(g != null)
         {
             moveDir = g.leftStick.ReadValue();
+
+            jumpControl = g.buttonNorth.isPressed || g.buttonWest.isPressed
+                || g.buttonSouth.isPressed || g.buttonEast.isPressed;
         }
         else
         {
@@ -55,26 +68,57 @@ public class Player : MonoBehaviour
                 dir = dir.normalized;
             moveDir = Vector2.Lerp(moveDir, dir, dirLerp);
         }
+
+        jumpControl |= Keyboard.current.spaceKey.isPressed;
+
+        if (!jump)
+        {
+            if (jumpControl && jumpToggle)
+            {
+                jump = true;
+                jumpHoldTimer = 0;
+                jumpToggle = false;
+            }
+            else if (!jumpToggle && !jumpControl)
+                jumpToggle = true;
+        }
+        else
+        {
+            jumpHoldTimer += Time.deltaTime;
+            if(jumpHoldTimer > jumpHoldTime)
+                jump = false;
+        }
     }
 
     private void FixedUpdate()
     {
-        normal = (transform.position - world.transform.position).normalized;
-
-        rb.AddForce(-normal * gravity);
+        up = (rb.position - world.transform.position).normalized;
         
         Move();
+        JumpAndFall();
     }
 
     private void Move()
     {
         // add up/down force relative to camera
         Vector3 forward = cam.transform.forward;
-        forward = Vector3.ProjectOnPlane(forward, normal);
-        rb.AddForce(forward * moveDir.y * moveForce);
+        forward = Vector3.ProjectOnPlane(forward, up);
+        forward *= moveDir.y * moveForce;
         // add left/right force relative to camera
         Vector3 right = cam.transform.right;
-        right = Vector3.ProjectOnPlane(right, normal);
-        rb.AddForce(right * moveDir.x * moveForce);
+        right = Vector3.ProjectOnPlane(right, up);
+        right *= moveDir.x * moveForce;
+
+        phys.Move(forward + right, up);
+    }
+
+    private void JumpAndFall()
+    {
+        rb.AddForce(-up * gravity);
+        if (jump)
+            if (phys.Jump())
+            {
+                jump = false;
+            }
     }
 }
