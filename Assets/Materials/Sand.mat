@@ -8,14 +8,13 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Sand
-  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 6b0fda9b93e40d04b98b388b209cfb97, type: 3}
   m_ShaderKeywords: _EMISSION _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2000
-  stringTagMap:
-    RenderType: Opaque
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -77,6 +76,9 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - Vector1_02186cd7ecf24a98b14b203a2e435d6f: 0.2
+    - Vector1_9d41f1c50991430c87c3f7f5ee496d09: 5
+    - Vector1_fd2f4b5ef0ad4ae8bedc295a676ce848: 10
     - _AlphaClip: 0
     - _Blend: 2
     - _BumpScale: 1
@@ -106,6 +108,8 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
+    - Color_51881359024449baa3cdfb39eb1d64f4: {r: 0, g: 0, b: 0, a: 0}
+    - Color_6c1546340731451cb98d6fffcd12ac74: {r: 0.8207547, g: 0.7508961, b: 0.2142221, a: 0}
     - _BaseColor: {r: 0.9811321, g: 0.8626398, b: 0.25608158, a: 1}
     - _Color: {r: 0.9811321, g: 0.8626398, b: 0.25608158, a: 1}
     - _EmissionColor: {r: 0.7372549, g: 0.6666667, b: 0.5882353, a: 1}

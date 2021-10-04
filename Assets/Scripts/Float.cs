@@ -11,6 +11,8 @@ public class Float : MonoBehaviour
     private Rigidbody rb;
     private Vector3 up;
 
+    private bool splash = true;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,8 +31,15 @@ public class Float : MonoBehaviour
 
         if (Vector3.Dot(rb.position - up * offset, up) < 0)
         {
+            if (splash)
+            {
+                splash = false;
+                HutSplash.OnSplash(rb.position);
+            }
             rb.velocity *= (1 - friction);
             rb.AddForce(((up * offset) - rb.position) * 100 * rb.mass);
         }
+        if (rb.position.magnitude > offset + 2)
+            splash = true;
     }
 }
