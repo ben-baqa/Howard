@@ -35,7 +35,8 @@ public class PlayerAnimation : MonoBehaviour
     {
         transform.position = pos;
 
-        if(Vector3.ProjectOnPlane(vel, normal).magnitude > 0)
+        if(Vector3.ProjectOnPlane(vel, normal).magnitude != 0 &&
+            normal.magnitude > 0)
             transform.rotation = Quaternion.Lerp(transform.rotation,
                 Quaternion.LookRotation(
                 Vector3.ProjectOnPlane(vel, normal), normal), normLerp);

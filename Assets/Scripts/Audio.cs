@@ -7,13 +7,13 @@ public class Audio : MonoBehaviour
     public float wobbleThreshold, wobble2Threshold, lerp;
     public AudioSource main, steel, wobble, wobble2, volcano, boom;
     
-    private Island island;
+    public Island island;
     private MeteorSpawner rockSpawner;
 
     // Start is called before the first frame update
     void Start()
     {
-        island = FindObjectOfType<Island>();
+        //island = FindObjectOfType<Island>();
         rockSpawner = FindObjectOfType<MeteorSpawner>();
 
         main.volume = 1;
@@ -33,17 +33,20 @@ public class Audio : MonoBehaviour
         on.Add(steel);
 
         off.Add(wobble2);
-        if(island.tilt > wobbleThreshold)
-            on.Add(wobble);
-        else
-            off.Add(wobble);
+        if (island)
+        {
+            if (island.tilt > wobbleThreshold)
+                on.Add(wobble);
+            else
+                off.Add(wobble);
 
-        if (island.tilt > wobble2Threshold)
-            on.Add(wobble2);
-        else
-            off.Add(wobble2);
+            if (island.tilt > wobble2Threshold)
+                on.Add(wobble2);
+            else
+                off.Add(wobble2);
+        }
 
-        if (rockSpawner.fire)
+        if (rockSpawner && rockSpawner.fire)
         {
             on.Add(volcano);
             on.Add(boom);
