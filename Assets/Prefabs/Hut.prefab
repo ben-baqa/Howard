@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5897519101864488669}
   - component: {fileID: 5897519101864488668}
   - component: {fileID: 5897519101864488667}
+  - component: {fileID: 7851352425792107772}
   m_Layer: 0
   m_Name: hut
   m_TagString: Untagged
@@ -95,7 +96,7 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 0.01
   m_Drag: 1
-  m_AngularDrag: 0.1
+  m_AngularDrag: 0.5
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -128,6 +129,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gravity: 0.5
+--- !u!114 &7851352425792107772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5897519101864488666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa236ab9e09378247b76386811b166bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offset: 251
+  friction: 0.05
+  centreOfMassOffset: {x: 0, y: 0, z: -5}
 --- !u!1 &6155115473528430734
 GameObject:
   m_ObjectHideFlags: 0
