@@ -19,7 +19,7 @@ public class MeteorSpawner : MonoBehaviour
         timer = timerOffset;
         world = World.instance.transform;
         parentRb = GetComponentInParent<Rigidbody>();
-        fireWaitCount = fireCount * Random.Range(1, 2);
+        fireWaitCount = fireCount * Random.Range(3, 8);
     }
 
     // Update is called once per frame
@@ -31,19 +31,19 @@ public class MeteorSpawner : MonoBehaviour
             timer -= interval;
             if (fire)
             {
-                if(fireTimer++ > fireCount)
+                if(++fireTimer > fireCount)
                 {
                     fire = false;
-                    fireTimer = 0;
-                    fireWaitCount = fireCount * Random.Range(1, 2);
+                    fireTimer = 1;
+                    fireWaitCount = fireCount * Random.Range(3, 8);
                 }
             }
             else
             {
-                if(fireTimer++ > fireWaitCount)
+                if(++fireTimer > fireWaitCount)
                 {
                     fire = true;
-                    fireTimer = 0;
+                    fireTimer = 1;
                 }
             }
             if(fire)

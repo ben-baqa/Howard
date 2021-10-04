@@ -6074,7 +6074,7 @@ MonoBehaviour:
   - {fileID: 2343355940874277826, guid: 492f8f0074d18244a9a5a5d0689a9d67, type: 3}
   - {fileID: 6372368264713255127, guid: b54a73ff06e048746972682774700049, type: 3}
   interval: 2.4489796
-  timerOffset: -0.6122449
+  timerOffset: 1.8367347
   SpawnVelocity: 50
   spawnSkew: 1
   recoil: 150
