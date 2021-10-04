@@ -30,21 +30,8 @@ public class Island : MonoBehaviour
         rb.velocity *= (1 - friction);
         rb.AddForce(((normal * offset) - rb.position) * centreForce);
 
-        Vector3 euler = Quaternion.FromToRotation(normal, transform.up).eulerAngles,
-            right = Vector3.ProjectOnPlane(transform.right, normal),
-            forward = Vector3.ProjectOnPlane(transform.forward, normal);
-        euler.x = LoopAngle(euler.x, 0);
-        euler.z = LoopAngle(euler.z, 0);
-        rb.AddForce(-right * euler.z * tiltMoveForce);
-        rb.AddForce(forward * euler.x * tiltMoveForce);
-    }
-
-    private float LoopAngle(float angle, float centre = 180)
-    {
-        if (angle > centre + 180)
-            return LoopAngle(angle - 360, centre);
-        else if (angle < centre - 180)
-            return LoopAngle(angle + 360, centre);
-        return angle;
+        Vector3 diff = transform.up - normal;
+        diff = Vector3.ProjectOnPlane(diff, normal);
+        rb.AddForce(diff * tiltMoveForce);
     }
 }

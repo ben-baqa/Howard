@@ -39,10 +39,4 @@ public class HutSpawner : MonoBehaviour
             t.Rotate(rayHit.normal, Random.Range(0, 360));
         }
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

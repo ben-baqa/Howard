@@ -8,6 +8,8 @@ public class Gravity : MonoBehaviour
 
     private Rigidbody rb;
     private World world;
+    private Vector3 up;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,7 +19,7 @@ public class Gravity : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector3 up = transform.position - world.transform.position;
+        up = transform.position - world.transform.position;
         rb.AddForce(-up.normalized * gravity);
     }
 }
